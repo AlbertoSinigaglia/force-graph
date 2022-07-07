@@ -7,7 +7,7 @@
     canvas.style.width = window.innerWidth+"px";
     canvas.style.height = window.innerHeight+"px";
     c.translate(canvas.width/2,canvas.height/2);
-    const stepsize = 0.002;
+    const stepsize = 0.001;
     c.strokeStyle = "#000"
     c.fillStyle = "#111"
     const N_VERTEX = 100
@@ -89,7 +89,7 @@
         return res
     }
     let previousPosition = JSON.parse(JSON.stringify(positions))
-    const beta = 0.5
+    const beta = 0.1
     const update = () => {
         let storePosition = JSON.parse(JSON.stringify(positions))
         let y = []
