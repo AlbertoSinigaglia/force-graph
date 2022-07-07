@@ -33,4 +33,8 @@ Other losses are being tested, for example having ![](https://latex.codecogs.com
 In the actual calculated gradient, is also being added a Gaussian prior ![](https://latex.codecogs.com/svg.image?\small&space;\bg{white}\sum&space;||p_i||^2) on the positions, in order to keep the graph near 0
 
 ## How to use
-If you just want to see how the result, you can visit 
+If you just want to see how the result, you can visit [this page](https://htmlpreview.github.io/?https://github.com/AlbertoSinigaglia/force-graph/blob/main/force-graph-optimization.html), however you can just clone it, and change the script path on the bottom of the HTML file
+
+
+## Licence
+Do whatever you want
