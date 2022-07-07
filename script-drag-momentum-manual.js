@@ -28,8 +28,15 @@
         [12, 14],
         [12, 15],
         [14, 15],
+        [16, 0],
+        [16, 17],
+        [16, 18],
+        [17, 18],
+        [19, 18],
+        [16, 19],
+        [19, 17],
     ]
-    const N_VERTEX = pairs.length
+    const N_VERTEX = Math.max(...pairs.flat(Infinity)) - Math.min(...pairs.flat(Infinity)) + 1
     const adjMatrix = Array.from({length: N_VERTEX}).map(_ => {
         return Array.from({length: N_VERTEX}).map(_ => 0)
     })
@@ -177,7 +184,7 @@
             } else {
                 c.fillStyle = "black"
             }
-            c.arc(scaledPos[i][0], scaledPos[i][1], 20, 0, Math.PI * 2, false)
+            c.arc(scaledPos[i][0], scaledPos[i][1], 10 + 10 * adjMatrix[i].reduce((a,b) => a+b), 0, Math.PI * 2, false)
             c.fill()
             c.stroke()
             c.closePath()
