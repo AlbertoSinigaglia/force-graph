@@ -39,8 +39,11 @@ In the actual calculated gradient, is also being added a Gaussian prior ![](http
 
 ## Results:
 Following images are results of the uploaded code:
-![](./results-images/manual.png)
-![](./results-images/random.png)
+Manual graph             |  Random graph
+:-------------------------:|:-------------------------:
+![](./results-images/manual.png)  |  ![](./results-images/random.png)
+
+
 
 
 ## Licence
