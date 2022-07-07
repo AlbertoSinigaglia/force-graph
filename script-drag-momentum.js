@@ -27,8 +27,9 @@
     
     let positions = adjMatrix.map(_ => [Math.random() - 0.5,Math.random()  - 0.5])
     let currentDragged  = -1
+    let dragPosition = {}
     canvas.addEventListener('mousedown', function(event) {
-        dragStart = {
+        dragPosition = {
             x: (event.pageX - canvas.offsetLeft - window.innerWidth/2) * canvasScale,
             y: (event.pageY - canvas.offsetTop - window.innerHeight/2) * canvasScale
         }
@@ -37,8 +38,8 @@
         let pseudoPositions = scaledPositions()
         for(let i = 0 ; i < positions.length; i++){
             let p = pseudoPositions[i]
-            if(Math.sqrt(Math.pow(p[0] - dragStart.x,2) - Math.pow(p[1] - dragStart.y,2)) < min){
-                min = Math.sqrt(Math.pow(p[0] - dragStart.x,2) - Math.pow(p[1] - dragStart.y,2))
+            if(Math.sqrt(Math.pow(p[0] - dragPosition.x,2) + Math.pow(p[1] - dragPosition.y,2)) < min){
+                min = Math.sqrt(Math.pow(p[0] - dragPosition.x,2) + Math.pow(p[1] - dragPosition.y,2))
                 index = i
             }
         }
@@ -47,13 +48,10 @@
 
     canvas.addEventListener('mousemove', function(event) {
         if (currentDragged != -1) {
-            dragEnd = {
+            dragPosition = {
                 x: (event.pageX - canvas.offsetLeft - window.innerWidth/2) * canvasScale,
                 y: (event.pageY - canvas.offsetTop - window.innerHeight/2) * canvasScale
             }
-            positions[currentDragged][0] = dragEnd.x / (Math.min(canvas.width, canvas.height)/2 * printScale)
-            positions[currentDragged][1] = dragEnd.y / (Math.min(canvas.width, canvas.height)/2 * printScale)
-            
         }
 
     })
@@ -114,6 +112,9 @@
             if(i != currentDragged || currentDragged == -1){
                 positions[i][0] = y[i][0] - stepsize * (Math.sign(grad[i][0]) * Math.min(Math.abs(grad[i][0]), clipTo))
                 positions[i][1] = y[i][1] - stepsize * (Math.sign(grad[i][1]) * Math.min(Math.abs(grad[i][1]), clipTo))
+            } else {
+                positions[currentDragged][0] -= 0.05 * (positions[currentDragged][0] - dragPosition.x / (Math.min(canvas.width, canvas.height)/2 * printScale))
+                positions[currentDragged][1] -= 0.05 * (positions[currentDragged][1] - dragPosition.y / (Math.min(canvas.width, canvas.height)/2 * printScale))
             }
         }
     }
