@@ -1,7 +1,9 @@
 # Force graph using numerical optimization
 This repo is a personal project that aims to create a [force graph](https://en.wikipedia.org/wiki/Force-directed_graph_drawing) using numerical optimization.
 
-The project is entirely created by myself, therefore there are probably better loss to use, in case, open an issue and i'll be glad to discuss about that
+The project is entirely created by myself, therefore there are probably better loss to use, in case, open an issue and i'll be glad to discuss about that.
+
+
 
 ## Introduction
 This project aims to create a force graph minimizing a loss function that should describe a configuration.
@@ -38,3 +40,6 @@ If you just want to see how the result, you can visit [this page](https://htmlpr
 
 ## Licence
 Do whatever you want
+
+## Others
+Pay attention that for some reason that I'm not fully interested, it works fien only if the width of the display is greater than the height (in other words, turn your phone or tablet horizontally)
