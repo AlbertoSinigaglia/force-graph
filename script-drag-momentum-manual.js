@@ -1,5 +1,5 @@
 (() => {
-    const printScale = 0.5
+    const printScale = 0.4
     const canvasScale = 5
     const canvas = document.querySelector("#canvas");
     const c = canvas.getContext('2d');
@@ -8,7 +8,7 @@
     canvas.style.width = window.innerWidth+"px";
     canvas.style.height = window.innerHeight+"px";
     c.translate(canvas.width/2,canvas.height/2);
-    const stepsize = 0.001;
+    const stepsize = 0.01;
     c.strokeStyle = "#000"
     c.fillStyle = "#111"
     const pairs = [
