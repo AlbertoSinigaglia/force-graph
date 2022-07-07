@@ -48,6 +48,14 @@
                                     Math.pow(Math.pow(positions[i][0] - positions[j][0],2) + Math.pow(positions[i][1] - positions[j][1],2),2)
                 }
             }
+            for(let j = 0; j < adjMatrix.length; j++){
+                if(i != j){
+                        temp[0] +=  -1* (positions[i][0] - positions[j][0]) / 
+                                    Math.pow(Math.pow(positions[i][0] - positions[j][0],2) + Math.pow(positions[i][1] - positions[j][1],2),2)
+                        temp[1] +=  -1* (positions[i][1] - positions[j][1]) / 
+                                    Math.pow(Math.pow(positions[i][0] - positions[j][0],2) + Math.pow(positions[i][1] - positions[j][1],2),2)
+                }
+            }
 
             temp[0] += positions[i][0]
             temp[1] += positions[i][1]
@@ -132,7 +140,8 @@
             for(let j = 0; j < N_VERTEX; j++){
                 if(i != j){
                     total += adjMatrix[i][j] * (Math.pow(positions[i][0] - positions[j][0], 2) + Math.pow(positions[i][1] - positions[j][1], 2))+
-                            (1-adjMatrix[i][j]) * 1/(Math.pow(positions[i][0] - positions[j][0], 2) + Math.pow(positions[i][1] - positions[j][1], 2))
+                            (1-adjMatrix[i][j]) * 1/(Math.pow(positions[i][0] - positions[j][0], 2) + Math.pow(positions[i][1] - positions[j][1], 2))+
+                            1/(Math.pow(positions[i][0] - positions[j][0], 2) + Math.pow(positions[i][1] - positions[j][1], 2))
                 }
             }
         }

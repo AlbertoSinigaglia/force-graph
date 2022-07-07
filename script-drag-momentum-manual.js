@@ -11,10 +11,31 @@
     const stepsize = 0.001;
     c.strokeStyle = "#000"
     c.fillStyle = "#111"
-    const N_VERTEX = 100
+    const pairs = [
+        [0, 1],
+        [0, 2],
+        [0, 3],
+        [0, 4],
+        [0, 5],
+        [0, 11],
+        [6, 11],
+        [6, 7],
+        [6, 8],
+        [6, 9],
+        [6, 10],
+        [12, 11],
+        [12, 13],
+        [12, 14],
+        [12, 15],
+        [14, 15],
+    ]
+    const N_VERTEX = pairs.length
     const adjMatrix = Array.from({length: N_VERTEX}).map(_ => {
-        return Array.from({length: N_VERTEX}).map(_ => Math.round(Math.random()))
+        return Array.from({length: N_VERTEX}).map(_ => 0)
     })
+    for(p of pairs){
+        adjMatrix[p[0]][p[1]] = adjMatrix[p[1]][p[0]] = 1
+    }
     for(let i = 0; i < N_VERTEX; i++){
         for(let j = i; j < N_VERTEX; j++){
             if(i == j) adjMatrix[i][j] = 1
@@ -62,7 +83,7 @@
     })
 
     const alpha = 1
-    const calculateGrads = () => {
+    const calculateGrads = (positions) => {
         const res = []
         for(let i = 0; i < adjMatrix.length; i++){
             const temp = [0, 0];
@@ -97,13 +118,24 @@
         }
         return res
     }
+    let previousPosition = JSON.parse(JSON.stringify(positions))
+    const beta = 0.1
     const update = () => {
-        grad = calculateGrads()
-        const clipTo = 10
+        let storePosition = JSON.parse(JSON.stringify(positions))
+        let y = []
+        for(let i = 0; i < N_VERTEX; i++){
+            y.push([
+                positions[i][0] + beta * (positions[i][0] - previousPosition[i][0]),
+                positions[i][1] + beta * (positions[i][1] - previousPosition[i][1])
+            ])
+        }
+        grad = calculateGrads(y)
+        previousPosition = JSON.parse(JSON.stringify(positions))
+        const clipTo = 3
         for(let i = 0; i < adjMatrix.length; i++){
             if(i != currentDragged || currentDragged == -1){
-                positions[i][0] = positions[i][0] - stepsize * (Math.sign(grad[i][0]) * Math.min(Math.abs(grad[i][0]), 1))
-                positions[i][1] = positions[i][1] - stepsize * (Math.sign(grad[i][1]) * Math.min(Math.abs(grad[i][1]), 1))
+                positions[i][0] = y[i][0] - stepsize * (Math.sign(grad[i][0]) * Math.min(Math.abs(grad[i][0]), 1))
+                positions[i][1] = y[i][1] - stepsize * (Math.sign(grad[i][1]) * Math.min(Math.abs(grad[i][1]), 1))
             }
         }
     }

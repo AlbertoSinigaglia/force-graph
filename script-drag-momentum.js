@@ -1,4 +1,5 @@
 (() => {
+    const printScale = 0.5
     const canvasScale = 5
     const canvas = document.querySelector("#canvas");
     const c = canvas.getContext('2d');
@@ -7,7 +8,7 @@
     canvas.style.width = window.innerWidth+"px";
     canvas.style.height = window.innerHeight+"px";
     c.translate(canvas.width/2,canvas.height/2);
-    const stepsize = 0.001;
+    const stepsize = 0.0005;
     c.strokeStyle = "#000"
     c.fillStyle = "#111"
     const N_VERTEX = 100
@@ -50,8 +51,8 @@
                 x: (event.pageX - canvas.offsetLeft - window.innerWidth/2) * canvasScale,
                 y: (event.pageY - canvas.offsetTop - window.innerHeight/2) * canvasScale
             }
-            positions[currentDragged][0] = dragEnd.x / (Math.min(canvas.width, canvas.height)/2 * 0.8)
-            positions[currentDragged][1] = dragEnd.y / (Math.min(canvas.width, canvas.height)/2 * 0.8)
+            positions[currentDragged][0] = dragEnd.x / (Math.min(canvas.width, canvas.height)/2 * printScale)
+            positions[currentDragged][1] = dragEnd.y / (Math.min(canvas.width, canvas.height)/2 * printScale)
             
         }
 
@@ -81,6 +82,14 @@
                                     Math.pow(Math.pow(positions[i][0] - positions[j][0],2) + Math.pow(positions[i][1] - positions[j][1],2),2)
                 }
             }
+            for(let j = 0; j < adjMatrix.length; j++){
+                if(i != j){
+                        temp[0] +=  -1* (positions[i][0] - positions[j][0]) / 
+                                    Math.pow(Math.pow(positions[i][0] - positions[j][0],2) + Math.pow(positions[i][1] - positions[j][1],2),2)
+                        temp[1] +=  -1* (positions[i][1] - positions[j][1]) / 
+                                    Math.pow(Math.pow(positions[i][0] - positions[j][0],2) + Math.pow(positions[i][1] - positions[j][1],2),2)
+                }
+            }
 
             temp[0] += positions[i][0]
             temp[1] += positions[i][1]
@@ -89,9 +98,8 @@
         return res
     }
     let previousPosition = JSON.parse(JSON.stringify(positions))
-    const beta = 0.1
+    const beta = 0.01
     const update = () => {
-        let storePosition = JSON.parse(JSON.stringify(positions))
         let y = []
         for(let i = 0; i < N_VERTEX; i++){
             y.push([
@@ -101,18 +109,18 @@
         }
         grad = calculateGrads(y)
         previousPosition = JSON.parse(JSON.stringify(positions))
-        const clipTo = Infinity
+        const clipTo = 10
         for(let i = 0; i < adjMatrix.length; i++){
             if(i != currentDragged || currentDragged == -1){
-                positions[i][0] = y[i][0] - stepsize * (Math.sign(grad[i][0]) * Math.min(Math.abs(grad[i][0]), 1))
-                positions[i][1] = y[i][1] - stepsize * (Math.sign(grad[i][1]) * Math.min(Math.abs(grad[i][1]), 1))
+                positions[i][0] = y[i][0] - stepsize * (Math.sign(grad[i][0]) * Math.min(Math.abs(grad[i][0]), clipTo))
+                positions[i][1] = y[i][1] - stepsize * (Math.sign(grad[i][1]) * Math.min(Math.abs(grad[i][1]), clipTo))
             }
         }
     }
     const scaledPositions = () => {
         return positions.map(p => [
-            (p[0]) * Math.min(canvas.width, canvas.height)/2 * 0.8,
-            (p[1]) * Math.min(canvas.width, canvas.height)/2 * 0.8
+            (p[0]) * Math.min(canvas.width, canvas.height)/2 * printScale,
+            (p[1]) * Math.min(canvas.width, canvas.height)/2 * printScale
         ])
         
     }
@@ -201,7 +209,8 @@
             for(let j = 0; j < N_VERTEX; j++){
                 if(i != j){
                     total += adjMatrix[i][j] * (Math.pow(positions[i][0] - positions[j][0], 2) + Math.pow(positions[i][1] - positions[j][1], 2))+
-                            (1-adjMatrix[i][j]) * 1/(Math.pow(positions[i][0] - positions[j][0], 2) + Math.pow(positions[i][1] - positions[j][1], 2))
+                            (1-adjMatrix[i][j]) * 1/(Math.pow(positions[i][0] - positions[j][0], 2) + Math.pow(positions[i][1] - positions[j][1], 2))+
+                            1/(Math.pow(positions[i][0] - positions[j][0], 2) + Math.pow(positions[i][1] - positions[j][1], 2))
                 }
             }
         }
