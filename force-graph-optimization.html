@@ -1,5 +1,6 @@
 <html>
     <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <style>
             * {
                 padding:0;
@@ -9,26 +10,119 @@
                 position: relative
             }
             #loss {
-                position: fixed;
-                bottom:0;
-                left:0;
                 width:300px !important;
-                height:150px !important;
-                border-color: grey;
-                background-color: white;
                 transition: 0.2s all linear;
+                height:150px !important;
+            }
+            .card.loss{
+                position: fixed;
+                bottom:10px;
+                left:10px;
+                background-color: white;
             }
             #loss:hover{
                 width:600px !important;
                 height:300px !important;
             }
+            .card.panel{
+                position: fixed;
+                right:10px;
+                top:10px;
+                background-color: white;
+            }
+            .panel .card-body{
+                width: 250px;
+            }
         </style>
     </head>
     <body>
         <canvas id="canvas"></canvas>
-        <canvas id="loss"></canvas>
+        <div class="card loss">
+            <div class="card-body">
+                <canvas id="loss"></canvas>
+            </div>
+        </div>
+        <div class="card panel">
+            <div class="card-body">
+                <h3>Settings:</h3>
+                <div class="mb-3">
+                    <label class="form-label">Points color:</label>
+                    <input type="color" class="form-control" id="points-color">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Dragged point color:</label>
+                    <input type="color" class="form-control" id="dragged-point-color" value="#FF0000">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Attraction coefficient:</label>
+                    <input type="range" class="form-range" id="attraction-coefficient" min="0" max="50" step="0.001" value="10">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Repulsion coefficient:</label>
+                    <input type="range" class="form-range" id="repulsion-coefficient" min="0" max="50" step="0.001" value="10">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">General repulsion coefficient:</label>
+                    <input type="range" class="form-range" id="general-repulsion-coefficient" min="0" max="50" step="0.001" value="10">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Step size:</label>
+                    <input type="range" class="form-range" id="step-size" min="0" max="1.2" step="0.001" value="1">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Zoom:</label>
+                    <input type="range" class="form-range" id="scale" min="0" max="1" step="0.001" value="0.5">
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-success w-100" id="restart">Restart</button>
+                </div>
+            </div>
+        </div>
         <script src="./chart.js"></script>
         <script src="./script-drag-momentum-manual-oop.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script>
+            (() => {
+                document.getElementById("points-color").addEventListener("change", e => {
+                    e.preventDefault()
+                    graphSettings.pointsColor = e.target.value
+                })
+                document.getElementById("dragged-point-color").addEventListener("change", e => {
+                    e.preventDefault()
+                    graphSettings.draggedPointColor = e.target.value
+                })
+                document.getElementById("attraction-coefficient").addEventListener("change", e => {
+                    e.preventDefault()
+                    graph.coefficients.connected = parseFloat(e.target.value) / 10
+                })
+                document.getElementById("repulsion-coefficient").addEventListener("change", e => {
+                    e.preventDefault()
+                    graph.coefficients.notConnected = parseFloat(e.target.value)/ 10
+                })
+                document.getElementById("general-repulsion-coefficient").addEventListener("change", e => {
+                    e.preventDefault()
+                    graph.coefficients.all = parseFloat(e.target.value) / 10
+                })
+                document.getElementById("step-size").addEventListener("change", e => {
+                    e.preventDefault()
+                    graph.stepsize = -1 / (1000 * (parseFloat(e.target.value) - 1.1))
+                })
+                document.getElementById("scale").addEventListener("change", e => {
+                    e.preventDefault()
+                    graph.printScale = parseFloat(e.target.value)
+                })
+                document.getElementById("restart").addEventListener("click", e => {
+                    e.preventDefault()
+                    letTheShowBegins()
+                })
+                letTheShowBegins()
+                window.addEventListener("resize", () => {
+                    letTheShowBegins()
+                })
+            })()
+
+            
+        </script>
     </body>
 </html>
 

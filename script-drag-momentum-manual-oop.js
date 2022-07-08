@@ -70,9 +70,9 @@ class Graph{
         for(let i = 0; i < this.adjMatrix.length; i++){
             for(let j = 0; j < this.adjMatrix.length; j++){
                 if(i != j){
-                    total += this.adjMatrix[i][j] * (Math.pow(this.positions[i][0] - this.positions[j][0], 2) + Math.pow(this.positions[i][1] - this.positions[j][1], 2))+
-                            (1-this.adjMatrix[i][j]) * 1/(Math.pow(this.positions[i][0] - this.positions[j][0], 2) + Math.pow(this.positions[i][1] - this.positions[j][1], 2))+
-                            1/(Math.pow(this.positions[i][0] - this.positions[j][0], 2) + Math.pow(this.positions[i][1] - this.positions[j][1], 2))
+                    total += this.coefficients.connected * this.adjMatrix[i][j] * (Math.pow(this.positions[i][0] - this.positions[j][0], 2) + Math.pow(this.positions[i][1] - this.positions[j][1], 2))+
+                    this.coefficients.notConnected * (1-this.adjMatrix[i][j]) * 1/(Math.pow(this.positions[i][0] - this.positions[j][0], 2) + Math.pow(this.positions[i][1] - this.positions[j][1], 2))+
+                    this.coefficients.all * 1/(Math.pow(this.positions[i][0] - this.positions[j][0], 2) + Math.pow(this.positions[i][1] - this.positions[j][1], 2))
                 }
             }
         }
@@ -128,11 +128,21 @@ class LineChart{
                 scales: {
                     x: {
                       display: true,
+                      ticks: {
+                          font: {
+                            size: 10,
+                          },
+                      }
                     },
                     y: {
                       display: true,
                       type: 'logarithmic',
-                    }
+                      ticks: {
+                          font: {
+                            size: 10,
+                          },
+                      }
+                    },
                   },
                 plugins: {
                     legend: {
@@ -142,7 +152,7 @@ class LineChart{
                       display: true,
                       text: title,
                       font: {
-                            size: 30
+                            size: 10
                       }
                     }
                 },
@@ -209,13 +219,16 @@ function generateGraphParameters(){
 
 var graph = null;
 var chart = null;
+var graphSettings = {
+    pointsColor: "black",
+    draggedPointColor: "red",
+};
 
 
 
 
 
-
-(() => {
+function letTheShowBegins(){
     /**
      * Initialize canvas
      */
@@ -233,6 +246,7 @@ var chart = null;
     /**
      * Initialize global objects
      */
+    chart?.chart?.destroy()
     graph = new Graph({width: canvas.width, height:canvas.height}, ...generateGraphParameters())
     chart = new LineChart(document.getElementById('loss').getContext('2d'), "Loss of the system");
     
@@ -276,7 +290,7 @@ var chart = null;
         for(let i = 0; i < scaledPos.length; i++){
             for(let j = i; j < scaledPos.length; j++){
                 if(adjMatrix[i][j]){
-                    c.strokeStyle = i == graph.currentDraggedId() || j == graph.currentDraggedId() ? "red" : "black"
+                    c.strokeStyle = i == graph.currentDraggedId() || j == graph.currentDraggedId() ? graphSettings.draggedPointColor : graphSettings.pointsColor
                     c.beginPath()
                     c.moveTo(scaledPos[i][0], scaledPos[i][1])
                     c.lineTo(scaledPos[j][0], scaledPos[j][1])
@@ -287,13 +301,12 @@ var chart = null;
         }
         for(let i = 0; i < adjMatrix.length; i++){ 
             c.beginPath()
-            c.fillStyle = i == graph.currentDraggedId()  ? "red" : "black"
-            c.arc(scaledPos[i][0], scaledPos[i][1], 10 + 10 * adjMatrix[i].reduce((a,b) => a+b), 0, Math.PI * 2, false)
+            c.fillStyle = i == graph.currentDraggedId() ? graphSettings.draggedPointColor : graphSettings.pointsColor
+            c.arc(scaledPos[i][0], scaledPos[i][1], (10 + 10 * adjMatrix[i].reduce((a,b) => a+b)) * graph.printScale*2, 0, Math.PI * 2, false)
             c.fill()
             c.stroke()
             c.closePath()
         }
     }
     animate()  
-
-})()
+}

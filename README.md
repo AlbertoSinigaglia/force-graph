@@ -16,11 +16,11 @@ In order to converge to a more "stable" configuration, numerical optimization is
 ## Implementation
 There are some script file with different versions:
  
- - `script.js`: a naive implementation using GD, the main feature is that the image is scaled in the display 
- - `script-drag.js`: implementation with GD but you can drag the vertexes around (and has a loss graph)
- - `script-drag-momentum.js`: implementation with NAG and as for the previous you can drag the vertexes around (and has a loss graph)
- - `script-drag-momentum-manual.js`: implementation as the previous, but has an array called `pairs` where can be manually specified the connections  
- - `script-drag-momentum-manual-oop.js`: same as the previous, but the code is being reviewed to be more OOP/readable
+ - `other-versions/script.js`: a naive implementation using GD, the main feature is that the image is scaled in the display 
+ - `other-versions/script-drag.js`: implementation with GD but you can drag the vertexes around (and has a loss graph)
+ - `other-versions/script-drag-momentum.js`: implementation with NAG and as for the previous you can drag the vertexes around (and has a loss graph)
+ - `other-versions/script-drag-momentum-manual.js`: implementation as the previous, but has an array called `pairs` where can be manually specified the connections  
+ - `script-drag-momentum-manual-oop.js`: same as the previous, but the code is being reviewed to be more OOP/readable, and the HTML file has some user interface
 
 ## Loss/objective function
 In order to create a force map, a configuration is evaluated on the following loss:
