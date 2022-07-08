@@ -19,8 +19,9 @@ There are some script file with different versions:
  - `script.js`: a naive implementation using GD, the main feature is that the image is scaled in the display 
  - `script-drag.js`: implementation with GD but you can drag the vertexes around (and has a loss graph)
  - `script-drag-momentum.js`: implementation with NAG and as for the previous you can drag the vertexes around (and has a loss graph)
- -`script-drag-momentum-manual.js`: implementation as the previous, but has an array called `pairs` where can be manually specified the connections
- -`script-drag-momentum-manual-oop.js`: same as before, but the code is being reviewed to be more OOP/readable
+ - `script-drag-momentum-manual.js`: implementation as the previous, but has an array called `pairs` where can be manually specified the connections  
+ - `script-drag-momentum-manual-oop.js`: same as before, but the code is being reviewed to be more OOP/readable
+
 ## Loss/objective function
 In order to create a force map, a configuration is evaluated on the following loss:
 <!-- f(\bar{p}) = \sum_{i=0}^{|p|}\sum_{j=0}^{|p|} a_{ij} ||p_{i} - p_j||^2 + \sum_{i=0}^{|p|}\sum_{j=0}^{|p|} (1-a_{ij}) e^{-||p_{i} - p_j||^2} -->
